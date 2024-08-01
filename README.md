@@ -525,9 +525,10 @@ Using the same code in multiple places can be tedious, which is why this package
 
 For example, imagine that you need to add meta titles and descriptions for your pages. You can add your Macroable functions in the AppServiceProvider or create a dedicated file for this purpose, and define your function as shown in the code snippet:
 ```php
-    SEOTools::macro('webPage', function (string $title, string $description) {
+    SEOTools::macro('webPage', function (string $title, string $description, string|array $keywords) {
         SEOMeta::setTitle($title);
         SEOMeta::setDescription($description);
+        SEOMeta::setKeywords($keywords); // Keywords can be array or string with comma separated, example : "Keyword 1, Keyword 2, Etc"
         SEOMeta::setCanonical('http://current.url.com');
         OpenGraph::setDescription($description);
         OpenGraph::setTitle($title);
@@ -538,7 +539,7 @@ For example, imagine that you need to add meta titles and descriptions for your 
 
 In your controller, you can use the following code to utilize the function:
 ```php
-    SEOTools::webPage('Page title', 'Page description');
+    SEOTools::webPage('Page title', 'Page description', ['Page keyword 1','Page keyword 2', 'Page keyword 3', 'Etc']);
 ```
 
 #### API (SEOMeta)
@@ -651,14 +652,14 @@ TwitterCard::generate();
 use Artesaos\SEOTools\Facades\JsonLd;
 
 JsonLd::addValue($key, $value); // value can be string or array
-JsonLd::setType($type); // type of twitter card tag
-JsonLd::setTitle($type); // title of twitter card tag
-JsonLd::setSite($type); // site of twitter card tag
-JsonLd::setDescription($type); // description of twitter card tag
-JsonLd::setUrl($type); // url of twitter card tag
-JsonLd::setImage($url); // add image url
+JsonLd::setType($type); // type of Single JsonLd
+JsonLd::setTitle($type); // title of Single JsonLd
+JsonLd::setSite($type); // site of Single JsonLd
+JsonLd::setDescription($type); // description of Single JsonLd
+JsonLd::setUrl($type); // url of JsonLd
+JsonLd::setImage($url); // add image url of JsonLd
 
-// You can chain methods
+// You can chain methods like this
 JsonLd::addValue($key, $value)
     ->setType($type)
     ->setImage($url)
@@ -669,6 +670,7 @@ JsonLd::addValue($key, $value)
 
 // Generate html tags
 JsonLd::generate();
+// You will have retrieve <script content="application/ld+json"/>
 ```
 
 ### API (JsonLdMulti)
@@ -682,11 +684,11 @@ JsonLdMulti::newJsonLd(); // create a new JsonLd group
 JsonLdMulti::isEmpty(); // check if the current JsonLd group is empty
 JsonLdMulti::select($index); // choose the JsonLd group that will be edited by the methods below
 JsonLdMulti::addValue($key, $value); // value can be string or array
-JsonLdMulti::setType($type); // type of twitter card tag
-JsonLdMulti::setTitle($type); // title of twitter card tag
-JsonLdMulti::setSite($type); // site of twitter card tag
-JsonLdMulti::setDescription($type); // description of twitter card tag
-JsonLdMulti::setUrl($type); // url of twitter card tag
+JsonLdMulti::setType($type); // type of JsonLd group
+JsonLdMulti::setTitle($type); // title of JsonLd group
+JsonLdMulti::setSite($type); // site of JsonLd group
+JsonLdMulti::setDescription($type); // description of JsonLd group
+JsonLdMulti::setUrl($type); // url of JsonLd group
 JsonLdMulti::setImage($url); // add image url
 
 // You can chain methods
